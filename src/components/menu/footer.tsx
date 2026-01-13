@@ -16,7 +16,7 @@ export default function Footer() {
         {/* Info */}
         <div className="space-y-2 text-center md:text-right">
           {/* Location */}
-          <div className="flex items-center gap-2 justify-center md:justify-end font-[Zain-bold] text-lg font-bold">
+          <div className="flex items-center gap-2 justify-center md:justify-end font-[Zain-bold] text-sm md:text-lg font-bold">
             <FaMapMarkerAlt className="text-[#ED1B24]" />
             غزة - شارع النصر - مفترق العائلات
           </div>
@@ -25,7 +25,7 @@ export default function Footer() {
       <div className="flex items-center justify-center md:justify-end gap-2">
         <a
           href="tel:+970593221010"
-          className="flex items-center gap-2 text-white font-[Zain-bold] text-lg  hover:text-[#ED1B24] transition"
+          className="flex items-center gap-2 text-white font-[Zain-bold] text-sm md:text-lg  hover:text-[#ED1B24] transition"
         >
           <FaPhoneAlt className="text-[#ED1B24]" />
           970593221010+

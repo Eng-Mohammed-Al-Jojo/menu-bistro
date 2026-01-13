@@ -1,3 +1,4 @@
+// CategorySection.tsx
 import ItemRow from "./ItemRow";
 import type { Category, Item } from "./Menu";
 
@@ -11,11 +12,16 @@ export default function CategorySection({ category, items }: Props) {
     <section className="mb-16 px-4 md:px-0">
       {/* عنوان القسم */}
       <div className="mb-8 md:mb-10 flex items-center justify-center gap-4">
-        <span className="flex-1 h-1 bg-[#ED1B24]/60 rounded-full max-w-15" />
-        <h2 className="text-2xl md:text-3xl font-[Lemonada] font-bold text-[#231F20] uppercase tracking-widest">
+        <span className="flex-1 h-1 bg-[#ED1B24]/60 rounded-full min-w-5" />
+
+        <h2
+          className="text-[clamp(1rem,5vw,2rem)] md:text-[clamp(1.75rem,2.5vw,3rem)] font-[Lemonada] font-bold text-[#231F20] uppercase tracking-widest text-center"
+          style={{ lineHeight: 1 }}
+        >
           {category.name}
         </h2>
-        <span className="flex-1 h-1 bg-[#ED1B24]/60 rounded-full max-w-15" />
+
+        <span className="flex-1 h-1 bg-[#ED1B24]/60 rounded-full min-w-5" />
       </div>
 
       {/* قائمة الأصناف */}
