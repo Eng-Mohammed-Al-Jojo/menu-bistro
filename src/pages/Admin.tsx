@@ -134,7 +134,7 @@ const addCategory = async () => {
   setPopup({ type: null });
 
   setToast(`تم إضافة القسم "${newName}" بنجاح ✅`);
-  setTimeout(() => setToast(""), 3000);
+  setTimeout(() => setToast(""), 4000);
 };
 
 
@@ -175,10 +175,13 @@ const addCategory = async () => {
       itemIngredients:  "", // ✅ إضافة المكونات
 
     });
-  };
+    setToast("  تم التعديل بنجاح ✅");
+    setTimeout(() => setToast(""), 4000);
 
-  // ================= EXPORT EXCEL =================
-  const exportToExcel = async () => {
+
+  };
+// ================= EXPORT EXCEL =================
+const exportToExcel = async () => {
   if (!categories || !items) {
     alert("البيانات لم يتم تحميلها بعد!");
     return;
@@ -187,13 +190,16 @@ const addCategory = async () => {
   const workbook = new ExcelJS.Workbook();
   const sheet = workbook.addWorksheet("Items");
 
+  // الأعمدة تشمل كل الحقول
   sheet.columns = [
     { header: "الاسم", key: "name", width: 30 },
     { header: "السعر", key: "price", width: 15 },
     { header: "سعر TW", key: "priceTw", width: 15 },
     { header: "القسم", key: "categoryName", width: 30 },
+    { header: "المكونات", key: "ingredients", width: 40 },
   ];
 
+  // إضافة البيانات
   Object.values(items).forEach((item: any) => {
     const categoryName = categories[item.categoryId]?.name ?? "غير محدد";
     sheet.addRow({
@@ -201,6 +207,7 @@ const addCategory = async () => {
       price: item.price,
       priceTw: item.priceTw || "",
       categoryName,
+      ingredients: item.ingredients || "",
     });
   });
 
@@ -209,16 +216,15 @@ const addCategory = async () => {
     type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   });
 
-  saveAs(blob, "menu-items.xlsx");
+  saveAs(blob, "bistro-menu.xlsx");
 };
 
-
-  // ================= IMPORT EXCEL =================
- const importFromExcel = async (e: React.ChangeEvent<HTMLInputElement>) => {
+// ================= IMPORT EXCEL =================
+const importFromExcel = async (e: React.ChangeEvent<HTMLInputElement>) => {
   const file = e.target.files?.[0];
   if (!file) return;
 
-  setLoading(true); // شغل اللودر
+  setLoading(true);
 
   try {
     const workbook = new ExcelJS.Workbook();
@@ -232,7 +238,7 @@ const addCategory = async () => {
       return;
     }
 
-    // إعداد خريطة الأقسام name => id
+    // خريطة الأقسام: اسم القسم → id
     const categoryMap: Record<string, string> = {};
     Object.entries(categories).forEach(([id, cat]: any) => {
       categoryMap[cat.name.trim().toLowerCase()] = id;
@@ -240,12 +246,13 @@ const addCategory = async () => {
 
     const rows: any[] = [];
     sheet.eachRow((row, index) => {
-      if (index === 1) return; // تخطي header
+      if (index === 1) return; // تخطي Header
       rows.push({
         name: row.getCell(1).value?.toString().trim() || "",
         price: row.getCell(2).value?.toString().trim() || "",
         priceTw: row.getCell(3).value?.toString().trim() || "",
         categoryName: row.getCell(4).value?.toString().trim() || "",
+        ingredients: row.getCell(5).value?.toString().trim() || "",
       });
     });
 
@@ -254,7 +261,7 @@ const addCategory = async () => {
       if (!item.name || !item.categoryName) continue;
 
       const categoryId = categoryMap[item.categoryName.toLowerCase()];
-      if (!categoryId) continue; // إذا القسم غير موجود، تخطى
+      if (!categoryId) continue; // إذا القسم غير موجود، تجاهل
 
       // تحقق من التكرار
       const exists = Object.values(items).some(
@@ -269,6 +276,7 @@ const addCategory = async () => {
         price: item.price,
         priceTw: item.priceTw || "",
         categoryId,
+        ingredients: item.ingredients || "",
         createdAt: Date.now(),
       });
 
@@ -286,9 +294,10 @@ const addCategory = async () => {
   } finally {
     setLoading(false);
     e.target.value = "";
-    setTimeout(() => setToast(""), 4000); // إخفاء التوست بعد 4 ثواني
+    setTimeout(() => setToast(""), 4000);
   }
 };
+
 
   // ================= LOGIN UI =================
   if (!authOk) {
@@ -297,7 +306,7 @@ const addCategory = async () => {
         {resetPasswordPopup && (
           <div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50">
             <div className="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-sm">
-              <h2 className="text-xl font-bold mb-4 text-red-600 text-center">
+              <h2 className="text-xl font-bold mb-4 text-[#D3AC69] text-center">
                 إعادة تعيين كلمة المرور
               </h2>
               <input
@@ -335,7 +344,7 @@ const addCategory = async () => {
             className="bg-white p-6 rounded-3xl w-full max-w-xs border"
             style={{ borderColor: "#C9A24D" }}
           >
-            <h1 className="text-xl font-bold mb-4 text-center">دخول الأدمن</h1>
+            <h1 className="text-xl font-bold mb-4 text-center text-[#e1a53d]">دخول الأدمن</h1>
             <input
               type="email"
               className="w-full p-3 border rounded-xl mb-3"
@@ -352,7 +361,7 @@ const addCategory = async () => {
             />
             <button
               onClick={login}
-              className="w-full py-3 rounded-xl font-bold bg-[#0F0F0F] text-red-600 hover:cursor-pointer"
+              className="w-full py-3 rounded-xl font-bold bg-[#0F0F0F] text-[#D3AC69] hover:cursor-pointer"
             >
               دخول
             </button>
@@ -396,7 +405,7 @@ const addCategory = async () => {
 
       <div className="w-full max-w-7xl px-8 sm:px-8 md:px-24">
         <div className="flex justify-between items-center mb-6 flex-wrap">
-          <h1 className="text-2xl font-bold text-white">لوحة تحكم Bistro</h1>
+          <h1 className="text-2xl font-bold text-[#D3AC69]">لوحة تحكم Bistro</h1>
           <div className="flex gap-2">
             <button
               onClick={exportToExcel}

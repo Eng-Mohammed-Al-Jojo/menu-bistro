@@ -10,81 +10,70 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="mt-16 bg-[#212121] text-white rounded-t-3xl">
+    <footer className="mt-16 bg-[#050205] text-[#FFFFFF] rounded-t-3xl">
       <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-6 text-sm">
 
         {/* Info */}
         <div className="space-y-2 text-center md:text-right">
+
           {/* Location */}
-          <div className="flex items-center gap-2 justify-center md:justify-end font-[Zain-bold] text-sm md:text-lg font-bold">
-            <FaMapMarkerAlt className="text-[#ED1B24]" />
+          <div className="flex items-center gap-2 justify-center md:justify-end 
+                          font-[Zain-bold] text-md md:text-lg font-bold 
+                          text-white transition  cursor-pointer">
+            <FaMapMarkerAlt className="text-[#D3AC69]" />
             غزة - شارع النصر - مفترق العائلات
           </div>
 
-         {/* Contact Number */}
-      <div className="flex items-center justify-center md:justify-end gap-2">
-        <a
-          href="tel:+970593221010"
-          className="flex items-center gap-2 text-white font-[Zain-bold] text-sm md:text-lg  hover:text-[#ED1B24] transition"
-        >
-          <FaPhoneAlt className="text-[#ED1B24]" />
-          970593221010+
-        </a>
-    </div>
+          {/* Contact Number */}
+          <div className="flex items-center justify-center md:justify-end gap-2">
+            <a
+              href="tel:+970593221010"
+              className="flex items-center gap-2 text-white 
+                         font-[Zain-bold] text-md md:text-lg 
+                        transition"
+            >
+              <FaPhoneAlt className="text-[#D3AC69]" />
+              970593221010+
+            </a>
+          </div>
+
         </div>
 
-        {/* Social */}
-        <div className="flex gap-4">
-          {/* WhatsApp */}
-          <a
-            href="https://wa.me/+970593221010"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-3 rounded-full bg-[#25D366] text-white shadow-lg 
-                       hover:scale-110 transition transform duration-300"
-            aria-label="WhatsApp"
-          >
-            <FaWhatsapp className="text-sm" />
-          </a>
+{/* Social */}
+<div className="flex gap-5">
 
-          {/* Instagram */}
-          <a
-            href="https://www.instagram.com/bistro_arafat?igsh=MXRtb24xN3Rob2IweQ=="
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-3 rounded-full 
-                       bg-linear-to-tr from-[#f58529] via-[#dd2a7b] to-[#8134af]
-                       text-white shadow-lg
-                       hover:scale-110 transition transform duration-300"
-            aria-label="Instagram"
-          >
-            <FaInstagram className="text-sm" />
-          </a>
+  {[
+    { href: "https://wa.me/+970593221010", icon: <FaWhatsapp /> },
+    { href: "https://www.instagram.com/bistro_arafat?igsh=MXRtb24xN3Rob2IweQ==", icon: <FaInstagram /> },
+    { href: "https://www.facebook.com/share/1EFLVfxQTb/", icon: <FaFacebookF /> },
+    { href: "https://www.tiktok.com/@bistro_arafat?_r=1&_t=ZS-9327RaoOi9J", icon: <FaTiktok /> },
+  ].map((item, i) => (
+    <a
+      key={i}
+      href={item.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="
+        group
+        relative
+        p-3
+        rounded-full
+        bg-[#D3AC69]
+        text-[#050205]
+        transition-all duration-300
+        hover:scale-110
+        hover:shadow-[0_0_28px_rgba(211,172,105,0.95)]
+      "
+    >
+      <span className="relative z-10  text-lg md:text-xl">
+        {item.icon}
+      </span>
 
-          {/* Facebook */}
-          <a
-            href="https://www.facebook.com/share/1EFLVfxQTb/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-3 rounded-full bg-[#1877F2] text-white shadow-lg
-                       hover:scale-110 transition transform duration-300"
-            aria-label="Facebook"
-          >
-            <FaFacebookF className="text-sm" />
-          </a>
+   
+    </a>
+  ))}
 
-          {/* TikTok */}
-          <a
-            href="https://www.tiktok.com/@bistro_arafat?_r=1&_t=ZS-9327RaoOi9J"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="p-3 rounded-full bg-black text-white shadow-lg
-                       hover:scale-110 transition transform duration-300"
-            aria-label="TikTok"
-          >
-            <FaTiktok className="text-sm" />
-          </a>
-        </div>
+</div>
 
         {/* Signature */}
         <div className="flex flex-col md:flex-row items-center gap-2 text-xs opacity-80 mt-4 md:mt-0">
@@ -92,10 +81,10 @@ export default function Footer() {
             href="https://engmohammedaljojo.vercel.app/"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Developer Portfolio"
-            className="text-white hover:text-[#ED1B24] transition flex items-center gap-1"
+            className="text-white  
+                       transition flex items-center gap-1"
           >
-            <FaLaptopCode className="text-lg md:text-xl text-[#ED1B24]" />
+            <FaLaptopCode className="text-[#D3AC69] text-lg md:text-xl" />
             <span className="font-[lemonada]">
               Eng. Mohammed Eljoujo
             </span>
@@ -106,3 +95,4 @@ export default function Footer() {
     </footer>
   );
 }
+

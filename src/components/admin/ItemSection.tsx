@@ -34,13 +34,15 @@ const ItemSection: React.FC<Props> = ({ categories, items, setPopup }) => {
     setSelectedCategory("");
   };
 
+  
+
   const toggleItem = async (id: string, visible: boolean) => {
     await update(ref(db, `items/${id}`), { visible: !visible });
   };
 
   return (
-    <div className="bg-white p-6 rounded-3xl border-2" style={{ borderColor: "#d60208" }}>
-      <h2 className="font-bold mb-4 text-2xl text-[#231F20]">المنتجات</h2>
+    <div className="bg-white p-6 rounded-3xl border-2" style={{ borderColor: "#D3AC69" }}>
+      <h2 className="font-bold mb-4 text-2xl text-[#231F20]">الأصناف</h2>
 
       {/* ADD ITEM */}
       <div className="flex gap-2 flex-wrap mb-6">
@@ -57,7 +59,7 @@ const ItemSection: React.FC<Props> = ({ categories, items, setPopup }) => {
 
         <input
           className="w-full p-2 border rounded-xl mb-2"
-          placeholder="اسم المنتج"
+          placeholder="اسم الصنف"
           value={itemName}
           onChange={(e) => setItemName(e.target.value)}
         />
@@ -79,18 +81,18 @@ const ItemSection: React.FC<Props> = ({ categories, items, setPopup }) => {
 
         <button
           onClick={addItem}
-          className="flex-4 py-2 rounded-xl font-bold bg-[#d60208] grow text-white
-          hover:text-black hover:bg-[#d22e34] hover:shadow-sm hover:shadow-red-400 hover:cursor-pointer"
+          className="flex-4 py-2 rounded-xl font-bold bg-[#D3AC69] grow text-black
+          hover:text-white hover:bg-[#dcaa52] hover:shadow-red-400 hover:cursor-pointer"
         >
-          إضافة المنتج
+          إضافة الصنف
         </button>
       </div>
 
       {/* QUICK SEARCH */}
-      <div className="bg-white p-4 rounded-3xl border-2" style={{ borderColor: "#d60208" }}>
+      <div className="bg-white p-4 rounded-3xl border-2" style={{ borderColor: "#D3AC69" }}>
         <input
           className="w-full p-2 border rounded-xl mb-4"
-          placeholder="ابحث بسرعة عن منتج أو قسم أو سعر..."
+          placeholder="ابحث بسرعة عن صنف أو قسم أو سعر..."
           value={quickSearch}
           onChange={(e) => setQuickSearch(e.target.value)}
         />

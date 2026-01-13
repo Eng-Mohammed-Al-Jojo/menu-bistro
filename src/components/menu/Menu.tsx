@@ -73,11 +73,11 @@ export default function Menu() {
           />
 
           <div className="relative w-20 h-20">
-            <div className="absolute inset-0 rounded-full border-4 border-black" />
-            <div className="absolute inset-0 rounded-full border-4 border-red-700 border-t-transparent animate-spin" />
+            <div className="absolute inset-0 rounded-full border-4 border-red-700" />
+            <div className="absolute inset-0 rounded-full border-4 border-[#D3AC69] border-t-transparent animate-spin" />
           </div>
 
-          <p className="text-red-700 text-lg tracking-widest animate-pulse font-[ArefRuqaa]">
+          <p className="text-red-700 text-xl md:text-3xl tracking-widest animate-pulse font-[ArefRuqaa]">
             يتم تحضير القائمة...
           </p>
         </div>

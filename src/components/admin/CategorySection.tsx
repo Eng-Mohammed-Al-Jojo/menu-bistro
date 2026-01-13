@@ -17,7 +17,7 @@ const CategorySection: React.FC<Props> = ({
   setNewCategoryName,
 }) => {
   return (
-    <div className="bg-white p-4 rounded-3xl mb-6 border-2" style={{ borderColor: "#d60208" }}>
+    <div className="bg-white p-4 rounded-3xl mb-6 border-2" style={{ borderColor: "#D3AC69" }}>
       <h2 className="font-bold mb-3 text-xl">الأقسام</h2>
       <div className="flex gap-2 flex-wrap mb-4">
         <input
@@ -29,9 +29,9 @@ const CategorySection: React.FC<Props> = ({
         
         <button
           onClick={() => setPopup({ type: "addCategory" })}
-          className="px-4 rounded-xl bg-green-600 flex items-center text-white hover:bg-green-500 hover:text-black hover:cursor-pointer"
+          className="px-4 rounded-xl bg-[#D3AC69] flex items-center text-black hover:bg-[#d4a450] hover:text-white hover:cursor-pointer"
         >
-          <FiPlus />
+          <FiPlus  className="text-lg"/>
         </button>
       </div>
       <div className="flex gap-2 flex-wrap">
