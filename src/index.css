@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+
+
+
+@font-face {
+  font-family: 'Playpen Sans Arabic';
+  src: url('/fonts/PlaypenSansArabic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'Lemonada';
+  src: url('/fonts/Lemonada.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ArefRuqaa';
+  src: url('/fonts/ArefRuqaa-Regular.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'ArefRuqaa-Bold';
+  src: url('/fonts/ArefRuqaa-Bold.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+
+
+@font-face {
+  font-family: 'Zain-bold';
+  src: url('/fonts/Zain-bold.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Zain-balck';
+  src: url('/fonts/Zain-balck.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Zain-ExtraBold';
+  src: url('/fonts/Zain-ExtraBold.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Zain-italic';
+  src: url('/fonts/Zain-italic.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+
+body {
+  font-family: 'Zain-ExtraBold', sans-serif;
+}
+
