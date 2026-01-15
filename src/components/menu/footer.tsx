@@ -43,7 +43,7 @@ export default function Footer() {
 <div className="flex gap-5">
 
   {[
-    { href: "https://wa.me/+970593221010", icon: <FaWhatsapp /> },
+    { href: "https://wa.me/+972597417420", icon: <FaWhatsapp /> },
     { href: "https://www.instagram.com/bistro_arafat?igsh=MXRtb24xN3Rob2IweQ==", icon: <FaInstagram /> },
     { href: "https://www.facebook.com/share/1EFLVfxQTb/", icon: <FaFacebookF /> },
     { href: "https://www.tiktok.com/@bistro_arafat?_r=1&_t=ZS-9327RaoOi9J", icon: <FaTiktok /> },

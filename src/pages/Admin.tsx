@@ -76,15 +76,25 @@ const [loading, setLoading] = useState(false);
     onValue(itemRef, (snap) => setItems(snap.val() || {}));
   }, [authOk]);
 
-  // ================= LOGIN =================
-  const login = async () => {
-    if (!email || !password) return alert("أدخل البريد وكلمة المرور");
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch {
-      alert("بيانات الدخول غير صحيحة");
-    }
-  };
+// ================= LOGIN =================
+const login = async () => {
+  if (!email || !password) {
+    setToast("⚠️ أدخل البريد الإلكتروني وكلمة المرور");
+    setTimeout(() => setToast(""), 3000);
+    return;
+  }
+
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+
+    setToast("✅ تم تسجيل الدخول بنجاح");
+    setTimeout(() => setToast(""), 3000);
+
+  } catch {
+    setToast("❌ بيانات الدخول غير صحيحة");
+    setTimeout(() => setToast(""), 3000);
+  }
+};
 
   // ================= RESET PASSWORD =================
   const handleResetPassword = async () => {
@@ -109,7 +119,13 @@ const [loading, setLoading] = useState(false);
 
   // ================= CATEGORY =================
 const addCategory = async () => {
-  if (!newCategoryName.trim()) return;
+
+  // ✅ تحقق إذا الحقل فاضي
+  if (!newCategoryName.trim()) {
+    setToast("⚠️ يجب إدخال اسم القسم أولاً");
+    setTimeout(() => setToast(""), 3000);
+    return;
+  }
 
   const newName = newCategoryName.trim();
 
@@ -138,21 +154,33 @@ const addCategory = async () => {
 };
 
 
-  const deleteCategory = async (id: string) => {
-    await remove(ref(db, `categories/${id}`));
-    Object.keys(items).forEach((itemId) => {
-      if (items[itemId].categoryId === id) {
-        remove(ref(db, `items/${itemId}`));
-      }
-    });
+ const deleteCategory = async (id: string) => {
+  await remove(ref(db, `categories/${id}`));
+
+  Object.keys(items).forEach((itemId) => {
+    if (items[itemId].categoryId === id) {
+      remove(ref(db, `items/${itemId}`));
+    }
+  });
+
+  // ✅ اعرض التوست أولًا
+  setToast("تم حذف القسم بنجاح ✅");
+  setTimeout(() => setToast(""), 4000);
+
+  // ✅ بعده اغلق البوب أب (بتأخير بسيط)
+  setTimeout(() => {
     setPopup({ type: null });
-  };
+  }, 100);
+};
+
 
   // ================= ITEMS =================
   const deleteItem = async () => {
     if (!popup.id) return;
     await remove(ref(db, `items/${popup.id}`));
     setPopup({ type: null });
+      setToast("  تم حذف الصنف بنجاح ✅");
+    setTimeout(() => setToast(""), 4000);
   };
 
   const updateItem = async () => {
@@ -299,90 +327,123 @@ const importFromExcel = async (e: React.ChangeEvent<HTMLInputElement>) => {
 };
 
 
-  // ================= LOGIN UI =================
-  if (!authOk) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#0F0F0F]" dir="rtl">
-        {resetPasswordPopup && (
-          <div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50">
-            <div className="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-sm">
-              <h2 className="text-xl font-bold mb-4 text-[#D3AC69] text-center">
-                إعادة تعيين كلمة المرور
-              </h2>
-              <input
-                type="email"
-                placeholder="أدخل بريدك الإلكتروني"
-                className="w-full p-3 border rounded-xl mb-3"
-                value={resetEmail}
-                onChange={(e) => setResetEmail(e.target.value)}
-              />
-              {resetMessage && (
-                <p className="text-sm text-center text-green-600 mb-2">{resetMessage}</p>
-              )}
-              <div className="flex justify-end gap-2">
-                <button
-                  onClick={handleResetPassword}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition"
-                >
-                  إرسال الرابط
-                </button>
-                <button
-                  onClick={() => {
-                    setResetPasswordPopup(false);
-                    setResetMessage("");
-                  }}
-                  className="px-4 py-2 rounded-xl border hover:bg-gray-100 transition"
-                >
-                  إلغاء
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-        {!resetPasswordPopup && (
-          <div
-            className="bg-white p-6 rounded-3xl w-full max-w-xs border"
-            style={{ borderColor: "#C9A24D" }}
-          >
-            <h1 className="text-xl font-bold mb-4 text-center text-[#e1a53d]">دخول الأدمن</h1>
+// ================= LOGIN UI =================
+if (!authOk) {
+  return (
+    <div
+      className="min-h-screen flex items-center justify-center bg-[#0F0F0F]"
+      dir="rtl"
+    >
+      {/* ✅ TOAST */}
+      {toast && (
+        <div
+          className="
+            fixed top-5 left-1/2 -translate-x-1/2 z-999
+            bg-[#d4a450]/90 text-white
+            px-6 py-3 rounded-xl shadow-xl
+            transition-all
+          "
+        >
+          {toast}
+        </div>
+      )}
+
+      {/* ================= RESET PASSWORD POPUP ================= */}
+      {resetPasswordPopup && (
+        <div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50">
+          <div className="bg-white rounded-3xl shadow-2xl p-6 w-full max-w-sm">
+            <h2 className="text-xl font-bold mb-4 text-[#D3AC69] text-center">
+              إعادة تعيين كلمة المرور
+            </h2>
+
             <input
               type="email"
+              placeholder="أدخل بريدك الإلكتروني"
               className="w-full p-3 border rounded-xl mb-3"
-              placeholder="اسم المستخدم (Email)"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={resetEmail}
+              onChange={(e) => setResetEmail(e.target.value)}
             />
-            <input
-              type="password"
-              className="w-full p-3 border rounded-xl mb-4"
-              placeholder="كلمة المرور"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <button
-              onClick={login}
-              className="w-full py-3 rounded-xl font-bold bg-[#0F0F0F] text-[#D3AC69] hover:cursor-pointer"
-            >
-              دخول
-            </button>
-            <button
-              onClick={() => setResetPasswordPopup(true)}
-              className="mt-3 text-sm text-red-600 hover:underline hover:cursor-pointer"
-            >
-              نسيت كلمة المرور؟
-            </button>
+
+            {resetMessage && (
+              <p className="text-sm text-center text-green-600 mb-2">
+                {resetMessage}
+              </p>
+            )}
+
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={handleResetPassword}
+                className="bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition"
+              >
+                إرسال الرابط
+              </button>
+
+              <button
+                onClick={() => {
+                  setResetPasswordPopup(false);
+                  setResetMessage("");
+                }}
+                className="px-4 py-2 rounded-xl border hover:bg-gray-100 transition"
+              >
+                إلغاء
+              </button>
+            </div>
           </div>
-        )}
-      </div>
-    );
-  }
+        </div>
+      )}
+
+      {/* ================= LOGIN FORM ================= */}
+      {!resetPasswordPopup && (
+        <div
+          className="bg-white p-6 rounded-3xl w-full max-w-xs border"
+          style={{ borderColor: "#C9A24D" }}
+        >
+          <h1 className="text-xl font-bold mb-4 text-center text-[#e1a53d]">
+            دخول الأدمن
+          </h1>
+
+          <input
+            type="email"
+            className="w-full p-3 border rounded-xl mb-3"
+            placeholder="اسم المستخدم (Email)"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input
+            type="password"
+            className="w-full p-3 border rounded-xl mb-4"
+            placeholder="كلمة المرور"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <button
+            onClick={login}
+            className="w-full py-3 rounded-xl font-bold bg-[#0F0F0F] text-[#D3AC69]"
+          >
+            دخول
+          </button>
+
+          <button
+            onClick={() => setResetPasswordPopup(true)}
+            className="mt-3 text-sm text-red-600 hover:underline"
+          >
+            نسيت كلمة المرور؟
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
+
 
   // ================= ADMIN PANEL =================
   return (
     <div className="min-h-screen w-full bg-[#0F0F0F] flex justify-center py-5 md:p-6" dir="rtl">
         {/* ======== TOAST ======== */}
     {toast && (
-      <div className="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 bg-black/80 text-white px-6 py-3 rounded-xl shadow-lg transition-all">
+      <div className="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 bg-[#d4a450]/80 text-white px-6 py-3 rounded-xl shadow-lg transition-all">
         {toast}
       </div>
     )}
