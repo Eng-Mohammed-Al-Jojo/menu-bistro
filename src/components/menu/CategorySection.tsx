@@ -16,7 +16,7 @@ export default function CategorySection({ category, items }: Props) {
 
       <h2
         className="text-[clamp(1rem,5vw,2rem)] md:text-[clamp(1.75rem,2.5vw,3rem)]
-                  font-[Lemonada] font-bold
+                  font-[Cairo]  font-bold
                   text-[#d33e27]
                   uppercase tracking-widest text-center"
       

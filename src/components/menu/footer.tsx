@@ -18,7 +18,7 @@ export default function Footer() {
 
           {/* Location */}
           <div className="flex items-center gap-2 justify-center md:justify-end 
-                          font-[Zain-bold] text-md md:text-lg font-bold 
+                          font-[Cairo] text-md md:text-lg font-bold 
                           text-white transition  cursor-pointer">
             <FaMapMarkerAlt className="text-[#D3AC69]" />
             غزة - شارع النصر - مفترق العائلات
@@ -29,7 +29,7 @@ export default function Footer() {
             <a
               href="tel:+970593221010"
               className="flex items-center gap-2 text-white 
-                         font-[Zain-bold] text-md md:text-lg 
+                         font-[Cairo] text-md md:text-lg 
                         transition"
             >
               <FaPhoneAlt className="text-[#D3AC69]" />
@@ -85,7 +85,7 @@ export default function Footer() {
                        transition flex items-center gap-1"
           >
             <FaLaptopCode className="text-[#D3AC69] text-lg md:text-xl" />
-            <span className="font-[lemonada]">
+            <span className="font-[Cairo] font-extrabold">
               Eng. Mohammed Eljoujo
             </span>
           </a>

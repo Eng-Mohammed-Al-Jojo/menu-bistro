@@ -16,7 +16,7 @@ export default function ItemRow({ item, luxury }: Props) {
         {/* الاسم والمكونات */}
         <div className="flex-1 min-w-0">
           <span
-            className={`block text-md md:text-xl font-[Zain-ExtraBold] truncate
+            className={`block text-md md:text-xl font-[Cairo] font-bold truncate
               ${unavailable ? "line-through text-[#231F20]/40" : "text-[#231F20]"}`}
           >
             {item.name}
@@ -24,7 +24,7 @@ export default function ItemRow({ item, luxury }: Props) {
 
           {/* المكونات تظهر فقط إذا متوفر */}
           {!unavailable && item.ingredients && (
-            <span className="block text-sm sm:text-sm mt-1 truncate font-[Zain-italic] text-gray-500">
+            <span className="block text-sm sm:text-sm mt-1 truncate font-[Cairo] font-normal text-gray-500">
               {item.ingredients}
             </span>
           )}
@@ -34,11 +34,11 @@ export default function ItemRow({ item, luxury }: Props) {
         <div className="shrink-0 text-right flex flex-col items-end gap-1">
           {unavailable ? (
             // نص بديل للسعر
-            <span className="text-sm sm:text-base text-[#ED1B24] font-[Zain-italic]">
+            <span className="text-sm sm:text-base text-[#ED1B24] font-[Cairo] font-light">
               غير متوفر حالياً
             </span>
           ) : (
-            <div className="flex items-center gap-2 font-[Zain-ExtraBold] text-lg sm:text-lg text-[#D3AC69]">
+            <div className="flex items-center gap-2 font-[Cairo] font-bold text-lg sm:text-lg text-[#D3AC69]">
               {prices.map((p, i) => (
                 <span key={i}>{p.trim()}₪</span>
               ))}
