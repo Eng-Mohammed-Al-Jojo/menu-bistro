@@ -14,12 +14,15 @@ export default function CategorySection({ category, items }: Props) {
       <div className="mb-8 md:mb-10 flex items-center justify-center gap-4">
         <span className="flex-1 h-1 bg-[#D3AC69]/60 rounded-full min-w-5" />
 
-      <h2
-        className="text-[clamp(1rem,5vw,2rem)] md:text-[clamp(1.75rem,2.5vw,3rem)]
-                  font-[Cairo]  font-bold
-                  text-[#d33e27]
-                  uppercase tracking-widest text-center"
-      
+     <h2
+        className="
+          text-[clamp(1.3rem,6vw,2.4rem)]
+          md:text-[clamp(2rem,3vw,3.4rem)]
+          font-[Cairo] font-extrabold
+          text-[#d33e27]
+          uppercase tracking-widest
+          text-center
+        "
       >
         {category.name}
       </h2>
