@@ -17,45 +17,81 @@
   font-weight: 500;
   font-style: normal;
 }
+
+
+/* Cairo Thin */
 @font-face {
-  font-family: 'ArefRuqaa';
-  src: url('/fonts/ArefRuqaa-Regular.ttf') format('truetype');
-  font-weight: 500;
+  font-family: 'Cairo';
+  src: url('/fonts/Cairo-Thin.ttf') format('truetype');
+  font-weight: 200;
   font-style: normal;
 }
+
+/* Cairo ExtraLight */
 @font-face {
-  font-family: 'ArefRuqaa-Bold';
-  src: url('/fonts/ArefRuqaa-Bold.ttf') format('truetype');
+  font-family: 'Cairo';
+  src: url('/fonts/Cairo-ExtraLight.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+/* Cairo Light */
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/Cairo-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+/* Cairo Regular */
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/Cairo-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Cairo Medium */
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/Cairo-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
 }
 
+/* Cairo SemiBold */
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/Cairo-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* Cairo Bold */
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/Cairo-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Cairo ExtraBold */
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/Cairo-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* Cairo Black */
+@font-face {
+  font-family: 'Cairo';
+  src: url('/fonts/Cairo-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
 
 
-@font-face {
-  font-family: 'Zain-bold';
-  src: url('/fonts/Zain-bold.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Zain-balck';
-  src: url('/fonts/Zain-balck.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Zain-ExtraBold';
-  src: url('/fonts/Zain-ExtraBold.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Zain-italic';
-  src: url('/fonts/Zain-italic.ttf') format('truetype');
-  font-weight: 500;
-  font-style: normal;
-}
 
 
 body {

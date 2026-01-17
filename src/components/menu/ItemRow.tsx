@@ -38,7 +38,7 @@ export default function ItemRow({ item, luxury }: Props) {
               غير متوفر حالياً
             </span>
           ) : (
-            <div className="flex items-center gap-2 font-[Cairo] font-bold text-lg sm:text-lg text-[#D3AC69]">
+            <div className="flex items-center gap-2 font-[Cairo] font-bold text-lg sm:text-lg text-black">
               {prices.map((p, i) => (
                 <span key={i}>{p.trim()}₪</span>
               ))}
