@@ -25,6 +25,7 @@ export default function Menu() {
   const [items, setItems] = useState<Item[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   /* ================== Fetch Data ================== */
   useEffect(() => {
@@ -89,31 +90,58 @@ export default function Menu() {
     items.some((i) => i.categoryId === cat.id)
   );
 
+  /* ================== Dropdown Options ================== */
+  const dropdownOptions = [{ id: null, name: "الكل" }, ...validCategories];
+
   return (
     <main className="max-w-4xl mx-auto px-4 pb-20 space-y-10">
+      
+    {/* ================== Custom Dropdown ================== */}
+<div className="flex justify-center mb-8 relative">
+  <button
+    onClick={() => setDropdownOpen(!dropdownOpen)}
+    className="
+      min-w-60 max-w-80 flex justify-between items-center px-4 py-2
+      bg-white border border-gray-300 rounded-xl shadow-md
+      text-gray-800 font-[Cairo] font-medium text-sm md:text-base
+      hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-red-500
+      transition duration-200
+    "
+  >
+    {activeCategory
+      ? validCategories.find((c) => c.id === activeCategory)?.name
+      : "الكل"}
+    <span
+      className="ml-2 transform transition-transform duration-200"
+      style={{ transform: dropdownOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+    >
+      ▼
+    </span>
+  </button>
 
-      {/* ================== Select List ================== */}
-      <div className="mb-8 flex justify-center">
-        <select
-          value={activeCategory ?? ""}
-          onChange={(e) =>
-            setActiveCategory(e.target.value === "" ? null : e.target.value)
-          }
+  {dropdownOpen && (
+    <ul className="absolute top-full mt-2 min-w-60 max-w-80 w-auto
+                   bg-white border border-gray-300 rounded-xl shadow-lg z-50
+                   overflow-auto max-h-60 animate-[fadeIn_0.3s_ease-out]">
+      {dropdownOptions.map((opt) => (
+        <li
+          key={opt.id ?? "all"}
+          onClick={() => {
+            setActiveCategory(opt.id);
+            setDropdownOpen(false);
+          }}
           className="
-            border border-gray-300 rounded-xl px-5 py-3 text-gray-800 text-base md:text-lg
-            shadow-md focus:ring-2 focus:ring-red-500 focus:border-red-500 outline-none
-            transition duration-200 ease-in-out bg-white hover:bg-gray-50
-            font-[Cairo]
+            px-4 py-2 cursor-pointer hover:bg-red-50 hover:text-red-700
+            transition duration-150 font-[Cairo] text-gray-800 text-sm md:text-base
           "
         >
-          <option value="">الكل</option>
-          {validCategories.map((cat) => (
-            <option key={cat.id} value={cat.id}>
-              {cat.name}
-            </option>
-          ))}
-        </select>
-      </div>
+          {opt.name}
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
+
 
       {/* ================== Sections ================== */}
       <div className="space-y-8">

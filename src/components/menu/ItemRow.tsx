@@ -24,7 +24,7 @@ export default function ItemRow({ item, luxury }: Props) {
 
           {/* المكونات تظهر فقط إذا متوفر */}
           {!unavailable && item.ingredients && (
-            <span className="block text-sm sm:text-sm mt-1 truncate font-[Cairo] font-normal text-gray-500">
+            <span className="block text-[10px] sm:text-xs mt-1 truncate font-[Cairo] font-normal text-gray-500">
               {item.ingredients}
             </span>
           )}
