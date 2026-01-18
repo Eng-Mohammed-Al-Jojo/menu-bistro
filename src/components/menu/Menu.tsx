@@ -12,9 +12,9 @@ export interface Category {
 export interface Item {
   id: string;
   name: string;
-  price: number;
+  price: number | string;
   ingredients?: string;
-  priceTw?: number;
+  priceTw?: number | string;
   categoryId: string;
   visible?: boolean;
   createdAt?: number;
@@ -26,44 +26,92 @@ export default function Menu() {
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [offline, setOffline] = useState(false);
+  const [toast, setToast] = useState("");
 
-  /* ================== Fetch Data ================== */
   useEffect(() => {
     let c = false;
     let i = false;
 
-    onValue(ref(db, "categories"), (snap) => {
-      const data = snap.val();
-      setCategories(
-        data
-          ? Object.entries(data).map(([id, v]: any) => ({
+    const fetchOfflineData = async () => {
+      try {
+        const res = await fetch("/menu-data.json");
+        if (!res.ok) throw new Error("Failed to load offline JSON");
+        const data = await res.json();
+
+        // تحويل الكائن لمصفوفة
+        const catsArray = data.categories
+          ? Object.entries(data.categories).map(([id, v]: any) => ({
               id,
               name: v.name,
               createdAt: v.createdAt || 0,
             }))
-          : []
-      );
-      c = true;
-      if (i) setLoading(false);
-    });
-
-    onValue(ref(db, "items"), (snap) => {
-      const data = snap.val();
-      setItems(
-        data
-          ? Object.entries(data).map(([id, v]: any) => ({
+          : [];
+        const itemsArray = data.items
+          ? Object.entries(data.items).map(([id, v]: any) => ({
               id,
               ...v,
               createdAt: v.createdAt || 0,
             }))
-          : []
-      );
+          : [];
+
+        setCategories(catsArray);
+        setItems(itemsArray);
+        setToast("أنت أوفلاين: يتم عرض البيانات من نسخة محلية");
+
+        // إزالة التوست بعد 3 ثواني
+        setTimeout(() => setToast(""), 3000);
+      } catch (err) {
+        console.error("Failed to load offline data", err);
+        setToast("فشل تحميل البيانات المحلية");
+        setCategories([]);
+        setItems([]);
+        setTimeout(() => setToast(""), 3000);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (!navigator.onLine) {
+      setOffline(true);
+      fetchOfflineData();
+      return;
+    }
+
+    const unsubscribeCategories = onValue(ref(db, "categories"), (snap) => {
+      const data = snap.val();
+      const catsArray = data
+        ? Object.entries(data).map(([id, v]: any) => ({
+            id,
+            name: v.name,
+            createdAt: v.createdAt || 0,
+          }))
+        : [];
+      setCategories(catsArray);
+      c = true;
+      if (i) setLoading(false);
+    });
+
+    const unsubscribeItems = onValue(ref(db, "items"), (snap) => {
+      const data = snap.val();
+      const itemsArray = data
+        ? Object.entries(data).map(([id, v]: any) => ({
+            id,
+            ...v,
+            createdAt: v.createdAt || 0,
+          }))
+        : [];
+      setItems(itemsArray);
       i = true;
       if (c) setLoading(false);
     });
+
+    return () => {
+      unsubscribeCategories();
+      unsubscribeItems();
+    };
   }, []);
 
-  /* ================== Loader ================== */
   if (loading) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/90 backdrop-blur-md">
@@ -85,63 +133,58 @@ export default function Menu() {
     );
   }
 
-  /* ================== Valid Categories ================== */
   const validCategories = categories.filter((cat) =>
     items.some((i) => i.categoryId === cat.id)
   );
 
-  /* ================== Dropdown Options ================== */
-  const dropdownOptions = [{ id: null, name: "الكل" }, ...validCategories];
+  const dropdownOptions = [{ id: null, name: "جميع الأصناف" }, ...validCategories];
 
   return (
-    <main className="max-w-4xl mx-auto px-4 pb-20 space-y-10">
-      
-    {/* ================== Custom Dropdown ================== */}
-<div className="flex justify-center mb-8 relative">
-  <button
-    onClick={() => setDropdownOpen(!dropdownOpen)}
-    className="
-      min-w-60 max-w-80 flex justify-between items-center px-4 py-2
-      bg-white border border-gray-300 rounded-xl shadow-md
-      text-gray-800 font-[Cairo] font-medium text-sm md:text-base
-      hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-red-500
-      transition duration-200
-    "
-  >
-    {activeCategory
-      ? validCategories.find((c) => c.id === activeCategory)?.name
-      : "الكل"}
-    <span
-      className="ml-2 transform transition-transform duration-200"
-      style={{ transform: dropdownOpen ? "rotate(180deg)" : "rotate(0deg)" }}
-    >
-      ▼
-    </span>
-  </button>
-
-  {dropdownOpen && (
-    <ul className="absolute top-full mt-2 min-w-60 max-w-80 w-auto
-                   bg-white border border-gray-300 rounded-xl shadow-lg z-50
-                   overflow-auto max-h-60 animate-[fadeIn_0.3s_ease-out]">
-      {dropdownOptions.map((opt) => (
-        <li
-          key={opt.id ?? "all"}
-          onClick={() => {
-            setActiveCategory(opt.id);
-            setDropdownOpen(false);
-          }}
-          className="
-            px-4 py-2 cursor-pointer hover:bg-red-50 hover:text-red-700
-            transition duration-150 font-[Cairo] text-gray-800 text-sm md:text-base
-          "
+    <main className="max-w-4xl mx-auto px-4 pb-20 space-y-10 relative">
+      {/* ================== Toast ================== */}
+      {toast && offline&&(
+        <div
+          className="fixed top-5 right-5 bg-red-600 text-white px-6 py-3 rounded-xl shadow-lg z-50 animate-fade-in-down"
+          style={{ animation: "fadeInDown 0.5s ease-out" }}
         >
-          {opt.name}
-        </li>
-      ))}
-    </ul>
-  )}
-</div>
+          {toast}
+        </div>
+      )}
 
+      {/* ================== Custom Dropdown ================== */}
+      <div className="flex justify-center mb-8 relative">
+        <button
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+          className="min-w-60 max-w-80 flex justify-between items-center px-4 py-2 bg-white border border-gray-300 rounded-xl shadow-md text-gray-800 font-[Cairo] font-medium text-sm md:text-base hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-red-500 transition duration-200"
+        >
+          {activeCategory
+            ? validCategories.find((c) => c.id === activeCategory)?.name
+            : "جميع الأصناف"}
+          <span
+            className="ml-2 transform transition-transform duration-200"
+            style={{ transform: dropdownOpen ? "rotate(180deg)" : "rotate(0deg)" }}
+          >
+            ▼
+          </span>
+        </button>
+
+        {dropdownOpen && (
+          <ul className="absolute top-full mt-2 min-w-60 max-w-80 w-auto bg-white border border-gray-300 rounded-xl shadow-lg z-50 overflow-auto max-h-60 animate-[fadeIn_0.3s_ease-out]">
+            {dropdownOptions.map((opt) => (
+              <li
+                key={opt.id ?? "all"}
+                onClick={() => {
+                  setActiveCategory(opt.id);
+                  setDropdownOpen(false);
+                }}
+                className="px-4 py-2 cursor-pointer hover:bg-red-50 hover:text-red-700 transition duration-150 font-[Cairo] text-gray-800 text-sm md:text-base"
+              >
+                {opt.name}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
 
       {/* ================== Sections ================== */}
       <div className="space-y-8">

@@ -326,6 +326,24 @@ const importFromExcel = async (e: React.ChangeEvent<HTMLInputElement>) => {
   }
 };
 
+  // ================= EXPORT JSON =================
+  const exportToJSON = () => {
+    const data = {
+      categories: categories,
+      items: items,
+      meta: { version: "1.0", exportedAt: Date.now() },
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "menu-data.json";
+    a.click();
+    URL.revokeObjectURL(url);
+    setToast("📦 تم تصدير ملف JSON بنجاح");
+    setTimeout(() => setToast(""), 4000);
+  };
+
 
 // ================= LOGIN UI =================
 if (!authOk) {
@@ -456,6 +474,9 @@ if (!authOk) {
         </div>
       </div>
     )}
+     {/* Inputs مخفية للملفات */}
+      <input type="file" accept=".xlsx" id="excelUpload" hidden onChange={importFromExcel} />
+
       <input
         type="file"
         accept=".xlsx"
@@ -468,23 +489,29 @@ if (!authOk) {
         <div className="flex justify-between items-center mb-6 flex-wrap">
           <h1 className="text-2xl font-bold text-[#D3AC69]">لوحة تحكم Bistro</h1>
           <div className="flex gap-2">
+          
             <button
               onClick={exportToExcel}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-green-600 text-white font-bold hover:bg-green-500 transition hover:cursor-pointer"
-            >
-                            <FiUpload size={18} />
-
-               
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-green-600 text-white font-bold
+               hover:bg-green-500 transition hover:cursor-pointer" >
+              <FiUpload size={18} />
             </button>
 
             <button
               onClick={() => document.getElementById("excelUpload")?.click()}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-500 transition hover:cursor-pointer"
-            >
-                            <FiDownload size={18} />
-
-               
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 text-white font-bold
+               hover:bg-blue-500 transition hover:cursor-pointer" >
+             <FiDownload size={18} />
             </button>
+
+            <button
+              onClick={exportToJSON}
+              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#D3AC69] text-white font-bold
+               hover:bg-[#e6c894] transition hover:cursor-pointer" >
+               backup
+              <FiUpload size={18} />
+            </button>
+
             <button
               onClick={() => setPopup({ type: "logout" })}
               className="px-4 py-2 rounded-xl font-bold bg-[#d60208] text-white flex items-center gap-1 hover:text-black hover:bg-[#d2343a] hover:cursor-pointer"
